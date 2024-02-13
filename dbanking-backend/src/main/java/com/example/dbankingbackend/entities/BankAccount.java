@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
+
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "TYPE",length = 4 ,discriminatorType = DiscriminatorType.STRING)
 @Data @AllArgsConstructor @NoArgsConstructor
 public class BankAccount {
     @Id
