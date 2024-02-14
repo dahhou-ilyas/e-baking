@@ -1,9 +1,6 @@
 package com.example.dbankingbackend;
 
-import com.example.dbankingbackend.entities.AccountOperation;
-import com.example.dbankingbackend.entities.CurrentAccount;
-import com.example.dbankingbackend.entities.Customer;
-import com.example.dbankingbackend.entities.SavingAccount;
+import com.example.dbankingbackend.entities.*;
 import com.example.dbankingbackend.enumes.AccountStatus;
 import com.example.dbankingbackend.enumes.OperationType;
 import com.example.dbankingbackend.repositories.BankAccountRepository;
@@ -23,7 +20,7 @@ public class DbankingBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(DbankingBackendApplication.class, args);
     }
-    @Bean
+    //@Bean
     CommandLineRunner start(CustomerRepository customerRepository, BankAccountRepository bankAccountRepository, BankOperationRepository bankOperationRepository){
         return args -> {
             Stream.of("hassan","Yassir","Aicha").forEach(name->{
@@ -66,7 +63,27 @@ public class DbankingBackendApplication {
                 }
 
             });
+            //hibernit connue automatiquement que si ce account et savingAccoutn ou currentAccount ; meme que on a une seul table dans la base de donné "backAccount"
 
+
+        };
+    }
+    @Bean
+    CommandLineRunner commandLineRunner(BankAccountRepository bankAccountRepository){
+        return args -> {
+            BankAccount bankAccount=bankAccountRepository.findById("19dd79a3-5521-4379-b2b3-c8e9729e6a8e").orElse(null);
+            if(bankAccount != null){
+                System.out.println("***************");
+                System.out.println(bankAccount.getId());
+                System.out.println(bankAccount.getBalance());
+                System.out.println(bankAccount.getCreatedAt());
+                System.out.println(bankAccount.getCustomer().getName());
+                if (bankAccount instanceof CurrentAccount){
+                    System.out.println(((CurrentAccount)bankAccount).getOverDraft());
+                }else if(bankAccount instanceof SavingAccount){
+                    System.out.println(((SavingAccount)bankAccount).getInterestRate());
+                }
+            }
         };
     }
 
