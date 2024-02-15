@@ -64,13 +64,26 @@ public class BankAccountServiceImpl implements BankAccountService {
         currentAccount.setCustomer(customer);
         currentAccount.setOverDraft(overDraft);
         currentAccount.setStatus(AccountStatus.CREATED);
-        CurrentAccount save=bankAccountRepository.save(currentAccount);
-        return save;
+        CurrentAccount saveBankeAccount=bankAccountRepository.save(currentAccount);
+        return saveBankeAccount;
     }
 
     @Override
     public BankAccount saveSavingBankAccount(double soldeInitiale, double interesrRate, Long customerId) throws CustomerNotFoundException {
-        return null;
+        Customer customer=getCustomer(customerId);
+        if (customer==null){
+            throw new CustomerNotFoundException("Customer not found");
+        }
+        SavingAccount savingAccount=new SavingAccount();
+
+        savingAccount.setId(UUID.randomUUID().toString());
+        savingAccount.setCreatedAt(new Date());
+        savingAccount.setBalance(soldeInitiale);
+        savingAccount.setCustomer(customer);
+        savingAccount.setInterestRate(interesrRate);
+        savingAccount.setStatus(AccountStatus.CREATED);
+        SavingAccount saveBankeAccount=bankAccountRepository.save(savingAccount);
+        return saveBankeAccount;
     }
 
 
