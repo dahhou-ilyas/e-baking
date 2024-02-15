@@ -1,7 +1,10 @@
 package com.example.dbankingbackend.services;
 
 import com.example.dbankingbackend.entities.BankAccount;
+import com.example.dbankingbackend.entities.CurrentAccount;
 import com.example.dbankingbackend.entities.Customer;
+import com.example.dbankingbackend.entities.SavingAccount;
+import com.example.dbankingbackend.exceptions.CustomerNotFoundException;
 import com.example.dbankingbackend.repositories.BankAccountRepository;
 import com.example.dbankingbackend.repositories.BankOperationRepository;
 import com.example.dbankingbackend.repositories.CustomerRepository;
@@ -11,7 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -33,12 +38,32 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public Customer saveCustomer(Customer customer) {
+        //en peut appliquer des regles metier comme avant d'enregister un customer il faut le virifier par exemples s'il n'ya pas apartienne à une black liste ou d'autre chose
         log.info("save new customer");
-        return null;
+        Customer saveCustomer=customerRepository.save(customer);
+        return saveCustomer;
     }
 
     @Override
-    public BankAccount saveBankAccount(double soldeInitiale, String accountStatus, Long customerId) {
+    public Customer getCustomer(Long id) {
+        return customerRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public BankAccount saveBankAccount(double soldeInitiale, String type, Long customerId) throws CustomerNotFoundException {
+        Customer customer=getCustomer(customerId);
+        if (customer==null){
+            throw new CustomerNotFoundException("Customer not found");
+        }
+        BankAccount bankAccount;
+        if (type.equals("current")){
+            bankAccount=new CurrentAccount();
+        }else {
+            bankAccount=new SavingAccount();
+        }
+        bankAccount.setId(UUID.randomUUID().toString());
+        bankAccount.setCreatedAt(new Date());
+        bankAccount.setBalance(soldeInitiale);
         return null;
     }
 
