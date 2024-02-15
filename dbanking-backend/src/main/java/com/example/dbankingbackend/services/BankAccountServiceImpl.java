@@ -4,6 +4,7 @@ import com.example.dbankingbackend.entities.BankAccount;
 import com.example.dbankingbackend.entities.CurrentAccount;
 import com.example.dbankingbackend.entities.Customer;
 import com.example.dbankingbackend.entities.SavingAccount;
+import com.example.dbankingbackend.enumes.AccountStatus;
 import com.example.dbankingbackend.exceptions.CustomerNotFoundException;
 import com.example.dbankingbackend.repositories.BankAccountRepository;
 import com.example.dbankingbackend.repositories.BankOperationRepository;
@@ -50,22 +51,28 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public BankAccount saveBankAccount(double soldeInitiale, String type, Long customerId) throws CustomerNotFoundException {
+    public BankAccount saveCurrentBankAccount(double soldeInitiale, double overDraft, Long customerId) throws CustomerNotFoundException {
         Customer customer=getCustomer(customerId);
         if (customer==null){
             throw new CustomerNotFoundException("Customer not found");
         }
-        BankAccount bankAccount;
-        if (type.equals("current")){
-            bankAccount=new CurrentAccount();
-        }else {
-            bankAccount=new SavingAccount();
-        }
-        bankAccount.setId(UUID.randomUUID().toString());
-        bankAccount.setCreatedAt(new Date());
-        bankAccount.setBalance(soldeInitiale);
+        CurrentAccount currentAccount=new CurrentAccount();
+
+        currentAccount.setId(UUID.randomUUID().toString());
+        currentAccount.setCreatedAt(new Date());
+        currentAccount.setBalance(soldeInitiale);
+        currentAccount.setCustomer(customer);
+        currentAccount.setOverDraft(overDraft);
+        currentAccount.setStatus(AccountStatus.CREATED);
+        CurrentAccount save=bankAccountRepository.save(currentAccount);
+        return save;
+    }
+
+    @Override
+    public BankAccount saveSavingBankAccount(double soldeInitiale, double interesrRate, Long customerId) throws CustomerNotFoundException {
         return null;
     }
+
 
     @Override
     public List<Customer> listCustomers() {

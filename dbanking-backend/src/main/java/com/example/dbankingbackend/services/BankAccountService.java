@@ -11,7 +11,8 @@ public interface BankAccountService {
     Customer saveCustomer(Customer customer);
 
     Customer getCustomer(Long id);
-    BankAccount saveBankAccount(double soldeInitiale, String type,Long customerId) throws CustomerNotFoundException;
+    BankAccount saveCurrentBankAccount(double soldeInitiale,double overDraft ,Long customerId) throws CustomerNotFoundException;
+    BankAccount saveSavingBankAccount(double soldeInitiale,double interesrRate ,Long customerId) throws CustomerNotFoundException;
     List<Customer> listCustomers();
     BankAccount getBankAccount(String accountId);
     void debit(String accountId,double amount, String description);
