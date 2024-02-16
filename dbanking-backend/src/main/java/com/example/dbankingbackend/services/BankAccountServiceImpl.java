@@ -10,8 +10,6 @@ import com.example.dbankingbackend.repositories.BankAccountRepository;
 import com.example.dbankingbackend.repositories.BankOperationRepository;
 import com.example.dbankingbackend.repositories.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,12 +95,13 @@ public class BankAccountServiceImpl implements BankAccountService {
         BankAccount bankAccount=bankAccountRepository.findById(accountId)
                 .orElseThrow(()->new BankAccountNotFoundException("BankAccount not found"));
 
-        return null;
+        return bankAccount;
     }
 
     @Override
     public void credit(String accountId, double amount, String description) throws BankAccountNotFoundException {
         BankAccount bankAccount=getBankAccount(accountId);
+        System.out.println(bankAccount);
         AccountOperation accountOperation=new AccountOperation();
         accountOperation.setType(OperationType.CREDIT);
         accountOperation.setAmount(amount);
@@ -135,5 +134,10 @@ public class BankAccountServiceImpl implements BankAccountService {
     public void transfert(String accountIdSource, String accountIdDestination, double amount) throws BankAccountNotFoundException, BalanceNotSuffisentException {
         debit(accountIdSource,amount,"transfert to "+accountIdDestination);
         credit(accountIdDestination,amount,"transfert to "+accountIdSource);
+    }
+
+    @Override
+    public List<BankAccount> bankAccountList(){
+        return bankAccountRepository.findAll();
     }
 }

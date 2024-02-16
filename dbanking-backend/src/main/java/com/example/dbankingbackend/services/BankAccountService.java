@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface BankAccountService {
     Customer saveCustomer(Customer customer);
-
     Customer getCustomer(Long id);
     BankAccount saveCurrentBankAccount(double soldeInitiale,double overDraft ,Long customerId) throws CustomerNotFoundException;
     BankAccount saveSavingBankAccount(double soldeInitiale,double interesrRate ,Long customerId) throws CustomerNotFoundException;
@@ -20,4 +19,6 @@ public interface BankAccountService {
     void debit(String accountId,double amount, String description) throws BankAccountNotFoundException, BalanceNotSuffisentException;
     void credit(String accountId,double amount, String description) throws BankAccountNotFoundException, BalanceNotSuffisentException;
     void transfert(String accountIdSource,String accountIdDestination, double amount) throws BankAccountNotFoundException, BalanceNotSuffisentException;
+
+    List<BankAccount> bankAccountList();
 }
