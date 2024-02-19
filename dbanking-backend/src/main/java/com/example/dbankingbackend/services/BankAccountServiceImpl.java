@@ -40,21 +40,21 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public Customer saveCustomer(Customer customer) {
+    public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
         //en peut appliquer des regles metier comme avant d'enregister un customer il faut le virifier par exemples s'il n'ya pas apartienne à une black liste ou d'autre chose
         log.info("save new customer");
+        Customer customer=bankAccountMapper.fromCustomerDTO(customerDTO);
         Customer saveCustomer=customerRepository.save(customer);
-        return saveCustomer;
+        return bankAccountMapper.fromCustomer(saveCustomer);
     }
-
     @Override
-    public Customer getCustomer(Long id) {
-        return customerRepository.findById(id).orElse(null);
+    public CustomerDTO getCustomer(Long id) throws CustomerNotFoundException {
+        Customer customer= customerRepository.findById(id).orElseThrow(()->new CustomerNotFoundException("Customer Not found"));
+        return bankAccountMapper.fromCustomer(customer);
     }
-
     @Override
     public BankAccount saveCurrentBankAccount(double soldeInitiale, double overDraft, Long customerId) throws CustomerNotFoundException {
-        Customer customer=getCustomer(customerId);
+        Customer customer=customerRepository.findById(customerId).orElse(null);
         if (customer==null){
             throw new CustomerNotFoundException("Customer not found");
         }
@@ -72,7 +72,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public BankAccount saveSavingBankAccount(double soldeInitiale, double interesrRate, Long customerId) throws CustomerNotFoundException {
-        Customer customer=getCustomer(customerId);
+        Customer customer=customerRepository.findById(customerId).orElse(null);
         if (customer==null){
             throw new CustomerNotFoundException("Customer not found");
         }

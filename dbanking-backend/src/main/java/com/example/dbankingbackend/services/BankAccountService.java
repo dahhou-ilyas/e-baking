@@ -11,8 +11,8 @@ import com.example.dbankingbackend.exceptions.CustomerNotFoundException;
 import java.util.List;
 
 public interface BankAccountService {
-    Customer saveCustomer(Customer customer);
-    Customer getCustomer(Long id);
+    CustomerDTO saveCustomer(CustomerDTO customer);
+    CustomerDTO getCustomer(Long id) throws CustomerNotFoundException;
     BankAccount saveCurrentBankAccount(double soldeInitiale,double overDraft ,Long customerId) throws CustomerNotFoundException;
     BankAccount saveSavingBankAccount(double soldeInitiale,double interesrRate ,Long customerId) throws CustomerNotFoundException;
     List<CustomerDTO> listCustomers();

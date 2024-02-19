@@ -1,5 +1,6 @@
 package com.example.dbankingbackend;
 
+import com.example.dbankingbackend.dto.CustomerDTO;
 import com.example.dbankingbackend.entities.*;
 import com.example.dbankingbackend.enumes.AccountStatus;
 import com.example.dbankingbackend.enumes.OperationType;
@@ -31,7 +32,7 @@ public class DbankingBackendApplication {
     CommandLineRunner commandLineRunner(BankAccountService bankAccountService){
         return args -> {
             Stream.of("Hassan","Iman","Mohamed").forEach(name->{
-                Customer customer=new Customer();
+                CustomerDTO customer=new CustomerDTO();
                 customer.setName(name);
                 customer.setAge(20L);
                 customer.setMail(name+"@gmail.com");
