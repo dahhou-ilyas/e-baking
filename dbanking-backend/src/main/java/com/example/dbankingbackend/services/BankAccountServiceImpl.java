@@ -1,11 +1,13 @@
 package com.example.dbankingbackend.services;
 
+import com.example.dbankingbackend.dto.CustomerDTO;
 import com.example.dbankingbackend.entities.*;
 import com.example.dbankingbackend.enumes.AccountStatus;
 import com.example.dbankingbackend.enumes.OperationType;
 import com.example.dbankingbackend.exceptions.BalanceNotSuffisentException;
 import com.example.dbankingbackend.exceptions.BankAccountNotFoundException;
 import com.example.dbankingbackend.exceptions.CustomerNotFoundException;
+import com.example.dbankingbackend.mappers.BankAccountMapperImpl;
 import com.example.dbankingbackend.repositories.BankAccountRepository;
 import com.example.dbankingbackend.repositories.BankOperationRepository;
 import com.example.dbankingbackend.repositories.CustomerRepository;
@@ -24,15 +26,17 @@ public class BankAccountServiceImpl implements BankAccountService {
     private CustomerRepository customerRepository;
     private BankAccountRepository bankAccountRepository;
     private BankOperationRepository bankOperationRepository;
+    private BankAccountMapperImpl bankAccountMapper;
 
     // on peut utiliser dérictement lobjet "Logger" directement sans utiliser le lombok annotatnio @Slf4j
     //Logger log=LoggerFactory.getLogger(this.getClass().getName());
 
     // injection de dependence
-    public BankAccountServiceImpl(CustomerRepository customerRepository, BankAccountRepository bankAccountRepository, BankOperationRepository bankOperationRepository) {
+    public BankAccountServiceImpl(CustomerRepository customerRepository, BankAccountRepository bankAccountRepository, BankOperationRepository bankOperationRepository,BankAccountMapperImpl bankAccountMapper) {
         this.customerRepository = customerRepository;
         this.bankAccountRepository = bankAccountRepository;
         this.bankOperationRepository = bankOperationRepository;
+        this.bankAccountMapper=bankAccountMapper;
     }
 
     @Override
@@ -86,8 +90,10 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 
     @Override
-    public List<Customer> listCustomers() {
-        return customerRepository.findAll();
+    public List<CustomerDTO> listCustomers() {
+        List<Customer> customers= customerRepository.findAll();
+        List<CustomerDTO> customerDTOS= customers.stream().map(cust->bankAccountMapper.fromCustomer(cust)).toList();
+        return customerDTOS;
     }
 
     @Override

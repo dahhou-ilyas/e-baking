@@ -27,7 +27,7 @@ public class DbankingBackendApplication {
     }
 
     //tester la couche service
-    @Bean
+    //@Bean
     CommandLineRunner commandLineRunner(BankAccountService bankAccountService){
         return args -> {
             Stream.of("Hassan","Iman","Mohamed").forEach(name->{
