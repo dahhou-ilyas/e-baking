@@ -1,6 +1,8 @@
 package com.example.dbankingbackend.services;
 
+import com.example.dbankingbackend.dto.CurrentBankAccountDTO;
 import com.example.dbankingbackend.dto.CustomerDTO;
+import com.example.dbankingbackend.dto.SavingBankAccountDTO;
 import com.example.dbankingbackend.entities.*;
 import com.example.dbankingbackend.enumes.AccountStatus;
 import com.example.dbankingbackend.enumes.OperationType;
@@ -68,7 +70,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         return bankAccountMapper.fromCustomer(customer);
     }
     @Override
-    public BankAccount saveCurrentBankAccount(double soldeInitiale, double overDraft, Long customerId) throws CustomerNotFoundException {
+    public CurrentBankAccountDTO saveCurrentBankAccount(double soldeInitiale, double overDraft, Long customerId) throws CustomerNotFoundException {
         Customer customer=customerRepository.findById(customerId).orElse(null);
         if (customer==null){
             throw new CustomerNotFoundException("Customer not found");
@@ -82,11 +84,11 @@ public class BankAccountServiceImpl implements BankAccountService {
         currentAccount.setOverDraft(overDraft);
         currentAccount.setStatus(AccountStatus.CREATED);
         CurrentAccount saveBankeAccount=bankAccountRepository.save(currentAccount);
-        return saveBankeAccount;
+        return bankAccountMapper.fromCurrentBankAccount(saveBankeAccount);
     }
 
     @Override
-    public BankAccount saveSavingBankAccount(double soldeInitiale, double interesrRate, Long customerId) throws CustomerNotFoundException {
+    public SavingBankAccountDTO saveSavingBankAccount(double soldeInitiale, double interesrRate, Long customerId) throws CustomerNotFoundException {
         Customer customer=customerRepository.findById(customerId).orElse(null);
         if (customer==null){
             throw new CustomerNotFoundException("Customer not found");
@@ -100,7 +102,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         savingAccount.setInterestRate(interesrRate);
         savingAccount.setStatus(AccountStatus.CREATED);
         SavingAccount saveBankeAccount=bankAccountRepository.save(savingAccount);
-        return saveBankeAccount;
+        return bankAccountMapper.fromSavingBankAccount(saveBankeAccount);
     }
 
 

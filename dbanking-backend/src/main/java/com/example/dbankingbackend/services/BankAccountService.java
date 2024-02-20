@@ -1,6 +1,8 @@
 package com.example.dbankingbackend.services;
 
+import com.example.dbankingbackend.dto.CurrentBankAccountDTO;
 import com.example.dbankingbackend.dto.CustomerDTO;
+import com.example.dbankingbackend.dto.SavingBankAccountDTO;
 import com.example.dbankingbackend.entities.BankAccount;
 import com.example.dbankingbackend.entities.Customer;
 import com.example.dbankingbackend.enumes.AccountStatus;
@@ -18,8 +20,8 @@ public interface BankAccountService {
     void deleteCustomer(Long customerId);
 
     CustomerDTO getCustomer(Long id) throws CustomerNotFoundException;
-    BankAccount saveCurrentBankAccount(double soldeInitiale,double overDraft ,Long customerId) throws CustomerNotFoundException;
-    BankAccount saveSavingBankAccount(double soldeInitiale,double interesrRate ,Long customerId) throws CustomerNotFoundException;
+    CurrentBankAccountDTO saveCurrentBankAccount(double soldeInitiale, double overDraft , Long customerId) throws CustomerNotFoundException;
+    SavingBankAccountDTO saveSavingBankAccount(double soldeInitiale, double interesrRate , Long customerId) throws CustomerNotFoundException;
     List<CustomerDTO> listCustomers();
     BankAccount getBankAccount(String accountId) throws BankAccountNotFoundException;
     void debit(String accountId,double amount, String description) throws BankAccountNotFoundException, BalanceNotSuffisentException;
