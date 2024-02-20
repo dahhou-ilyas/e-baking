@@ -1,9 +1,6 @@
 package com.example.dbankingbackend.services;
 
-import com.example.dbankingbackend.dto.BankAccountDTO;
-import com.example.dbankingbackend.dto.CurrentBankAccountDTO;
-import com.example.dbankingbackend.dto.CustomerDTO;
-import com.example.dbankingbackend.dto.SavingBankAccountDTO;
+import com.example.dbankingbackend.dto.*;
 import com.example.dbankingbackend.entities.BankAccount;
 import com.example.dbankingbackend.entities.Customer;
 import com.example.dbankingbackend.enumes.AccountStatus;
@@ -30,4 +27,8 @@ public interface BankAccountService {
     void transfert(String accountIdSource,String accountIdDestination, double amount) throws BankAccountNotFoundException, BalanceNotSuffisentException;
 
     List<BankAccountDTO> bankAccountList();
+
+    List<AccountOperationDTO> accountHistorique(String accountId);
+
+    AccountHistoryDTO getAccountHistorique(String accountId, int page, int size) throws BankAccountNotFoundException;
 }

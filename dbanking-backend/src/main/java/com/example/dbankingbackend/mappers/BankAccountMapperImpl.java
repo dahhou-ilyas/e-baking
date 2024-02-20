@@ -1,12 +1,10 @@
 package com.example.dbankingbackend.mappers;
 
+import com.example.dbankingbackend.dto.AccountOperationDTO;
 import com.example.dbankingbackend.dto.CurrentBankAccountDTO;
 import com.example.dbankingbackend.dto.CustomerDTO;
 import com.example.dbankingbackend.dto.SavingBankAccountDTO;
-import com.example.dbankingbackend.entities.BankAccount;
-import com.example.dbankingbackend.entities.CurrentAccount;
-import com.example.dbankingbackend.entities.Customer;
-import com.example.dbankingbackend.entities.SavingAccount;
+import com.example.dbankingbackend.entities.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 //MapStruct: autre outils pour faire le mapping
@@ -47,5 +45,11 @@ public class BankAccountMapperImpl {
         BeanUtils.copyProperties(currentBankAccountDTO,currentAccount);
         currentAccount.setCustomer(fromCustomerDTO(currentBankAccountDTO.getCustomerDTO()));
         return currentAccount;
+    }
+
+    public AccountOperationDTO fromAccountOperation(AccountOperation accountOperation){
+        AccountOperationDTO accountOperationDTO=new AccountOperationDTO();
+        BeanUtils.copyProperties(accountOperation,accountOperationDTO);
+        return accountOperationDTO;
     }
 }
