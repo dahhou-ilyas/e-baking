@@ -1,5 +1,6 @@
 package com.example.dbankingbackend;
 
+import com.example.dbankingbackend.dto.BankAccountDTO;
 import com.example.dbankingbackend.dto.CustomerDTO;
 import com.example.dbankingbackend.entities.*;
 import com.example.dbankingbackend.enumes.AccountStatus;
@@ -48,13 +49,16 @@ public class DbankingBackendApplication {
                     e.printStackTrace();
                 }
             });
-            List<BankAccount> bankAccountList= bankAccountService.bankAccountList();
-            for (BankAccount account:bankAccountList){
+            /*
+            List<BankAccountDTO> bankAccountList= bankAccountService.bankAccountList();
+            for (BankAccountDTO account:bankAccountList){
                 for (int i=0;i<10;i++){
+                    il faut teste le type de account ensuite en faire le cast
                     bankAccountService.credit(account.getId(),1000*Math.random()*120000,"Credit");
                     bankAccountService.debit(account.getId(),1000*Math.random()*1000,"Debit");
                 }
             }
+             */
         };
     }
 

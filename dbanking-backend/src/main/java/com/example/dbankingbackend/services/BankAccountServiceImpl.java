@@ -126,14 +126,12 @@ public class BankAccountServiceImpl implements BankAccountService {
             return bankAccountMapper.fromCurrentBankAccount(currentAccount);
         }
     }
-
     private BankAccount getBankAccountByID(String accountId) throws BankAccountNotFoundException {
         BankAccount bankAccount=bankAccountRepository.findById(accountId)
                 .orElseThrow(()->new BankAccountNotFoundException("BankAccount not found"));
         return bankAccount;
 
     }
-
     @Override
     public void credit(String accountId, double amount, String description) throws BankAccountNotFoundException {
         BankAccount bankAccount=getBankAccountByID(accountId);
@@ -148,7 +146,6 @@ public class BankAccountServiceImpl implements BankAccountService {
         bankAccount.setBalance(bankAccount.getBalance()+amount);
         bankAccountRepository.save(bankAccount);
     }
-
     @Override
     public void debit(String accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSuffisentException {
         BankAccount bankAccount=getBankAccountByID(accountId);
@@ -165,24 +162,21 @@ public class BankAccountServiceImpl implements BankAccountService {
         bankAccount.setBalance(bankAccount.getBalance()-amount);
         bankAccountRepository.save(bankAccount);
     }
-
     @Override
     public void transfert(String accountIdSource, String accountIdDestination, double amount) throws BankAccountNotFoundException, BalanceNotSuffisentException {
         debit(accountIdSource,amount,"transfert to "+accountIdDestination);
         credit(accountIdDestination,amount,"transfert to "+accountIdSource);
     }
-
     @Override
     public List<BankAccountDTO> bankAccountList(){
         List<BankAccount> bankAccounts= bankAccountRepository.findAll();
         List<BankAccountDTO> bankAccountDTOS= bankAccounts.stream().map(bankAccount -> {
             if(bankAccount instanceof SavingAccount){
-                return bankAccountMapper.fromSavingBankAccount((SavingAccount) bankAccount);
+                return bankAccountMapper.fromSavingBankAccount(((SavingAccount) bankAccount));
             }else {
-                return bankAccountMapper.fromCurrentBankAccount((CurrentAccount) bankAccount);
+                return bankAccountMapper.fromCurrentBankAccount(((CurrentAccount) bankAccount));
             }
         }).toList();
         return bankAccountDTOS;
     }
-
 }
