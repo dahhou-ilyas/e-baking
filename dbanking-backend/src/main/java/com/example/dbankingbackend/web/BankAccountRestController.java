@@ -1,9 +1,6 @@
 package com.example.dbankingbackend.web;
 
-import com.example.dbankingbackend.dto.AccountHistoryDTO;
-import com.example.dbankingbackend.dto.AccountOperationDTO;
-import com.example.dbankingbackend.dto.BankAccountDTO;
-import com.example.dbankingbackend.dto.DebitDTO;
+import com.example.dbankingbackend.dto.*;
 import com.example.dbankingbackend.entities.BankAccount;
 import com.example.dbankingbackend.exceptions.BalanceNotSuffisentException;
 import com.example.dbankingbackend.exceptions.BankAccountNotFoundException;
@@ -40,6 +37,12 @@ public class BankAccountRestController {
     public DebitDTO debit(@RequestBody DebitDTO debitDTO) throws BankAccountNotFoundException, BalanceNotSuffisentException {
         this.bankAccountService.debit(debitDTO.getAccountId(),debitDTO.getAmount(),debitDTO.getDescription());
         return debitDTO;
+    }
+
+    @PostMapping("/accounts/credit")
+    public CreditDTO credit(@RequestBody CreditDTO creditDTO) throws BankAccountNotFoundException, BalanceNotSuffisentException {
+        this.bankAccountService.credit(creditDTO.getAccountId(),creditDTO.getAmount(),creditDTO.getDescription());
+        return creditDTO;
     }
 
 }
