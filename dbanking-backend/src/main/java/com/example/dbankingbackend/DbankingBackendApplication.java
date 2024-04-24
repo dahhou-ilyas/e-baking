@@ -32,7 +32,7 @@ public class DbankingBackendApplication {
     //@Bean
     CommandLineRunner commandLineRunner(BankAccountService bankAccountService){
         return args -> {
-            Stream.of("Hassan","Iman","Mohamed").forEach(name->{
+            Stream.of("Hassan","Iman","Mohamed","ilyas").forEach(name->{
                 CustomerDTO customer=new CustomerDTO();
                 customer.setName(name);
                 customer.setAge(20L);
