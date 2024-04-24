@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CustomersService } from '../services/customers.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-customers',
@@ -8,19 +9,12 @@ import { CustomersService } from '../services/customers.service';
   styleUrl: './customers.component.css'
 })
 export class CustomersComponent implements OnInit{
-  customers:any;
+  customers$ !:Observable<any>;
   errorMessage! :string;
   constructor(private customerService:CustomersService){}
 
   ngOnInit(): void {
-    this.customerService.getCustomers().subscribe({
-      next:(data)=>{
-        this.customers=data;
-      },
-      error:(err)=>{
-        this.errorMessage=err.message;
-      }
-    })
+    this.customers$=this.customerService.getCustomers();
   }
 
 }

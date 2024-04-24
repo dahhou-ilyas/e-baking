@@ -4,7 +4,7 @@
         <div class="text-danger fw-bold " *ngIf="errorMessage">
             {{errorMessage}}
         </div>
-        <div class="card-body" *ngIf="customers">
+        <div class="card-body" *ngIf="customers$">
             <table class="table ">
                 <thead>
                     <tr>
@@ -15,7 +15,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let c of customers">
+                    <tr *ngFor="let c of customers$ | async">
                         <td>{{c.id}}</td>
                         <td>{{c.name}}</td>
                         <td>{{c.mail}}</td>
