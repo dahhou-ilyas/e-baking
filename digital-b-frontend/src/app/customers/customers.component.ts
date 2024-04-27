@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CustomersService } from '../services/customers.service';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
+import { Customer } from '../model/customer.model';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-customers',
@@ -9,12 +11,25 @@ import { Observable } from 'rxjs';
   styleUrl: './customers.component.css'
 })
 export class CustomersComponent implements OnInit{
-  customers$ !:Observable<any>;
+  customers$ !:Observable<Array<Customer>>;
   errorMessage! :string;
-  constructor(private customerService:CustomersService){}
+  searchFormGroup! : FormGroup;
+  constructor(private customerService:CustomersService,private fb:FormBuilder){}
 
   ngOnInit(): void {
-    this.customers$=this.customerService.getCustomers();
+    this.searchFormGroup=this.fb.group({
+      keyword:this.fb.control("")
+    })
+    this.customers$=this.customerService.getCustomers().pipe(
+      catchError(err=>{
+        this.errorMessage=err.message;
+        return throwError(() => new Error(err));
+      })
+    );
+  }
+
+  handleSearchCustomers(){
+
   }
 
 }

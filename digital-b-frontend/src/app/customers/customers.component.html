@@ -1,28 +1,48 @@
 <div class="container mt-5">
-    <div class="card" >
-        <div class="card-header ">Customers</div>
-        <div class="text-danger fw-bold " *ngIf="errorMessage">
-            {{errorMessage}}
+    <ng-container *ngIf="customers$ | async as listCustomers; else failureOrLoading">
+        <div class="card" >
+            <div class="card-header ">Customers</div>
+            <div class="card-body">
+                <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchCustomers()">
+                    <div class="input-group ">
+                        <label class="input-group-text ">KeyWord :</label>
+                        <input type="text" formControlName="keyword" class="form-control">
+                        <button class="btn btn-info ">Search</button>
+                    </div>
+                </form>
+                <table class="table ">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>phone Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let c of customers$ | async">
+                            <td>{{c.id}}</td>
+                            <td>{{c.name}}</td>
+                            <td>{{c.mail}}</td>
+                            <td>{{c.phoneNumber}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="card-body" *ngIf="customers$">
-            <table class="table ">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>phone Number</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let c of customers$ | async">
-                        <td>{{c.id}}</td>
-                        <td>{{c.name}}</td>
-                        <td>{{c.mail}}</td>
-                        <td>{{c.phoneNumber}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    </ng-container>
+    <ng-template #failureOrLoading >
+        <ng-container *ngIf="errorMessage; else container">
+            <div class="text-danger text-center text-xxl-center ">
+                {{errorMessage}}
+            </div>
+        </ng-container>
+        <ng-template #container>
+            <div class="flex-column justify-content-center align-content-center">
+                <div class="spinner-grow" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </ng-template>
+    </ng-template>
 </div>
