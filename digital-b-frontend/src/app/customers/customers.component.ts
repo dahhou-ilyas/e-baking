@@ -29,7 +29,7 @@ export class CustomersComponent implements OnInit{
   }
 
   handleSearchCustomers(){
-
+    let kw=this.searchFormGroup?.value.keyword;
   }
 
 }
