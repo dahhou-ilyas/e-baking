@@ -20,6 +20,21 @@ export class NewCustomerComponent implements OnInit{
         phoneNumber:this.fb.control(null,[Validators.required])
       });
   }
+  get nameRequiredError(): boolean {
+    return this.newCustomerFormGroup?.controls['name']?.errors?.['required'] || false;
+  }
+  
+  get mailRequiredError(): boolean {
+    return this.newCustomerFormGroup?.controls['mail']?.errors?.['required'] || false;
+  }
+  
+  get mailEmailError(): boolean {
+    return this.newCustomerFormGroup?.controls['mail']?.errors?.['email'] || false;
+  }
+  
+  get phoneNumberRequiredError(): boolean {
+    return this.newCustomerFormGroup?.controls['phoneNumber']?.errors?.['required'] || false;
+  }
 
   handleSubmitCustomer(){
     let customer:Customer =this.newCustomerFormGroup.value;
