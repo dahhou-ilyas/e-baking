@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CustomersService } from '../services/customers.service';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { Customer } from '../model/customer.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -21,6 +21,23 @@ export class CustomersComponent implements OnInit{
       keyword:this.fb.control("")
     })
     this.handleSearchCustomers()
+  }
+
+  handleDeleteCustomer(c:Customer){
+    this.customerService.deleteCustomers(c.id).subscribe({
+      next:data=>{
+        this.customers$=this.customers$.pipe(
+          map(data=>{
+            let index=data.indexOf(c);
+            data.slice(index,1)
+            return data;
+          })
+        )
+      },
+      error:err=>{
+        console.log(err);
+      }
+    });
   }
 
   handleSearchCustomers(){
