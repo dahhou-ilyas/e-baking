@@ -21,11 +21,11 @@ export class NewCustomerComponent implements OnInit{
       });
   }
   get nameRequiredError(): boolean {
-    return this.newCustomerFormGroup?.controls['name']?.errors?.['required'] || false;
+    return this.newCustomerFormGroup?.controls['name']?.errors?.['required'] && this.newCustomerFormGroup.controls['name'].touched;
   }
   
   get mailRequiredError(): boolean {
-    return this.newCustomerFormGroup?.controls['mail']?.errors?.['required'] || false;
+    return this.newCustomerFormGroup?.controls['mail']?.errors?.['required'] && this.newCustomerFormGroup.controls['mail'].touched;
   }
   
   get mailEmailError(): boolean {
@@ -33,7 +33,7 @@ export class NewCustomerComponent implements OnInit{
   }
   
   get phoneNumberRequiredError(): boolean {
-    return this.newCustomerFormGroup?.controls['phoneNumber']?.errors?.['required'] || false;
+    return this.newCustomerFormGroup?.controls['phoneNumber']?.errors?.['required'] && this.newCustomerFormGroup.controls['phoneNumber'].touched;
   }
 
   handleSubmitCustomer(){
