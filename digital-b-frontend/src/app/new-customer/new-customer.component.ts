@@ -43,6 +43,7 @@ export class NewCustomerComponent implements OnInit{
       next: data =>{
   
         alert("new cutomer added");
+        this.newCustomerFormGroup.reset()
       },
       error:err=>{
         console.log(err);
