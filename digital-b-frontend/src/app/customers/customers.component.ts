@@ -24,20 +24,24 @@ export class CustomersComponent implements OnInit{
   }
 
   handleDeleteCustomer(c:Customer){
-    this.customerService.deleteCustomers(c.id).subscribe({
-      next:data=>{
-        this.customers$=this.customers$.pipe(
-          map(data=>{
-            let index=data.indexOf(c);
-            data.slice(index,1)
-            return data;
-          })
-        )
-      },
-      error:err=>{
-        console.log(err);
-      }
-    });
+    let conf = confirm("Are you sure ?")
+    if(conf){
+      this.customerService.deleteCustomers(c.id).subscribe({
+        next:data=>{
+          this.customers$=this.customers$.pipe(
+            map(data=>{
+              let index=data.indexOf(c);
+              data.slice(index,1)
+              return data;
+            })
+          )
+        },
+        error:err=>{
+          console.log(err);
+        }
+      });
+    }
+    
   }
 
   handleSearchCustomers(){
