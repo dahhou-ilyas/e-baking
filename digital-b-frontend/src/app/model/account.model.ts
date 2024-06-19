@@ -9,7 +9,7 @@ export interface AccountDetails {
   
   export interface AccountOperation {
     id:            number;
-    operationDate: Date;
+    oprationDate: Date;
     amount:        number;
     type:          string;
     description:   string;
