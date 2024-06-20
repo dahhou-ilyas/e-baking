@@ -12,4 +12,5 @@ public interface BankOperationRepository extends JpaRepository<AccountOperation,
     List<AccountOperation> findByBankAccountId(String accountId);
 
     Page<AccountOperation> findByBankAccountId(String accountId, Pageable pageable);
+
 }
